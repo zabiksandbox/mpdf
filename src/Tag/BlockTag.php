@@ -4,6 +4,7 @@ namespace Mpdf\Tag;
 
 use Mpdf\Conversion\DecToAlpha;
 use Mpdf\Conversion\DecToRoman;
+
 use Mpdf\Utils\Arrays;
 use Mpdf\Utils\UtfString;
 
@@ -125,7 +126,7 @@ abstract class BlockTag extends Tag
 			}
 			// Cannot set block properties inside table - use Bold to indicate h1-h6
 			if ($tag === 'CENTER' && $this->mpdf->tdbegin) {
-				$this->mpdf->cell[$this->mpdf->row][$this->mpdf->col]['a'] = $this->getAlign('center');
+				$this->mpdf->cell[$this->mpdf->row][$this->mpdf->col]['a'] = self::ALIGN['center'];
 			}
 
 			$this->mpdf->InlineProperties['BLOCKINTABLE'] = $this->mpdf->saveInlineProperties();
@@ -397,7 +398,7 @@ abstract class BlockTag extends Tag
 
 		// mPDF 6
 		if (!empty($attr['ALIGN'])) {
-			$currblk['block-align'] = $this->getAlign($attr['ALIGN']);
+			$currblk['block-align'] = self::ALIGN[strtolower($attr['ALIGN'])];
 		}
 
 
@@ -1065,7 +1066,7 @@ abstract class BlockTag extends Tag
 				$this->mpdf->pageoutput[$this->mpdf->page] = [];
 			}
 			// mod changes operands to integers before processing
-			$this->mpdf->y = (round($this->mpdf->blk[$this->mpdf->blklvl]['float_endpos'] * 1000) % 1000000) / 1000;
+			$this->mpdf->y = (($this->mpdf->blk[$this->mpdf->blklvl]['float_endpos'] * 1000) % 1000000) / 1000;
 		}
 		/* -- END CSS-FLOAT -- */
 
